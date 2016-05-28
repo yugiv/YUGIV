@@ -1,0 +1,97 @@
+<div id="peoplebox">
+	<table style="border-collapse: collapse; background: #bcbcbc;">
+		<tr>
+			<td class="lightboxbutton friends">friends</td>
+			<td class="lightboxbutton follow">people you follow</td>
+			<td class="lightboxbutton requests">friend requests</td>
+			<td class="lightboxbutton search isclick">search</td>
+		</tr>
+	</table>
+	<div id="peoplecontainer">
+		<input type="search" class="searchbar" onkeyup="search(this.value)" name="psearch" id="psearch"/>
+		<div class="searchoutput" id="psoutput"></div>
+	</div>
+	<div id="bottomsociallightbox" class="unselectable"><div id="lightboxclose">close</div></div>
+<script>
+	function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+	}
+	$(document).on("click", "#psearch", function(){
+		
+	});
+	$(".follow").on("click", function(){
+		if(!$(this).hasClass('isclick')){
+			$("#peoplecontainer").empty();
+			$.get("http://localhost/YUGIV/xml/followboxlist.php",function(data){
+				$("#peoplecontainer").html(data);
+			});
+			$(".isclick").removeClass("isclick");
+			$(".follow").addClass("isclick");
+		}
+	});
+	$(".friends").on("click", function(){
+		if(!$(this).hasClass('isclick')){
+			$("#peoplecontainer").empty();
+			$.get("http://localhost/YUGIV/xml/friendboxlist.php",function(data){
+				$("#peoplecontainer").html(data);
+			});
+			$(".isclick").removeClass("isclick");
+			$(".friends").addClass("isclick");
+		}
+	});
+	$(".requests").on("click", function(){
+		if(!$(this).hasClass('isclick')){
+			$("#peoplecontainer").empty();
+			$.post("http://localhost/YUGIV/xml/requestsboxlist.php",{username:getCookie('username')},function(data){
+				$("#peoplecontainer").html(data);
+			});
+			$(".isclick").removeClass("isclick");
+			$(".requests").addClass("isclick");
+		}
+	});
+	$(".search").on("click", function(){
+		if(!$(this).hasClass('isclick')){
+			$("#peoplecontainer").empty();
+			var data ='<input type="search" class="searchbar" onkeyup="search(this.value)" name="psearch" id="psearch"/><div class="searchoutput" id="psoutput"></div>';
+			$("#peoplecontainer").html(data);
+			$(".isclick").removeClass("isclick");
+			$(".search").addClass("isclick");
+		}
+	});
+	function search(x){
+		$("#psoutput").show();
+		$("#psoutput").html("<img class='loading' src='http://localhost/YUGIV/images/ajax-loader.gif'/>");
+			$.post('http://localhost/YUGIV/xml/people_search.php',{data: x},function(data){
+					$("#psoutput").html(data);
+			});
+		if(x==""){
+			$("#psoutput").hide();
+		}
+	}
+	$(document).off('click','.requestaccept').on('click', '.requestaccept',function(e){
+		var username= $(this).attr('data');
+		$.post("http://localhost/YUGIV/xml/acceptboxrequest.php",{username:username},function(data){
+			if(data=="done")
+			$("div[data='"+username+"']").remove();
+		});
+	});
+	$(document).off('click','.requestrefuse').on('click','.requestrefuse', function(e){
+		var username= $(this).attr('data');
+		$.post("http://localhost/YUGIV/xml/refuseboxrequest.php",{username:username},function(data){
+			if(data=="done")
+			$("div[data='"+username+"']").remove();
+		});
+	});
+	$(document).on('click','.plist',function(){
+	window.location=$(this).find("a").attr("href");
+	return false;
+	});
+</script>
+</div>

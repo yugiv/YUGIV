@@ -1,0 +1,50 @@
+<div id="post" class="medium video_post">
+<p>Entry Title: <input name="title" id="title" type="text" size="80" maxlength="80" /></p>
+<div style="margin-left: 10px; width: 300px;"><div id="get_file">
+<input type="file" name="video" id="file" />
+	<p>click or drop file to choose video</p>
+</div>
+<div id="customfileupload">Select a file</div>
+<progress id="prog" style="visibility: hidden;" value="0" min="0" max="100"></progress></div>
+<br />
+<div id="postbottom">	
+	<select style="margin-left: 6px;" name="view_option" class="view">
+		<option>global</option>
+		<option>friends</option>
+		<option>personal</option>
+	</select>
+	<label style="margin-left: 20px;"><input type="checkbox" class="anobox" name="anonymous" value="anonymous"/>anonymity?</label>
+	<input style="margin-left: 20px;" type="button" value="post here" id="videopost" />
+</div>
+	<script>
+	$(document).on('click', '#videopost', function(){
+		if($("#file").val()==''){
+			alert('file empty');
+		}else{
+			$("#prog").css('visibility', 'visible');
+			$("#file").upload('http://localhost/YUGIV/xml/videoupload.php',function(data){
+				var videolink=data;
+				var title= $("#title").val();
+				var view_option= $(".view").val();
+				var ano = $(".anobox").is(":checked");
+				$.post('postupload.php', {title:title,post: videolink, view_option: view_option,anonymous:ano, type: "video post"}, function(ddata){
+					$("#post").remove();
+				});
+			},$("#prog"));
+		}
+	});
+	$(document).on('change','#file',function (e) {
+		var file= $(this).val();
+		var exts = ['ogg','webm','mp4'];
+	      if ( file ) {
+	        var get_ext = file.split('.');
+	        get_ext = get_ext.reverse();
+	        if ( $.inArray ( get_ext[0].toLowerCase(), exts ) > -1 ){
+	          $('#customfileupload').html($(this).val());
+	        } else {
+	          $(this).val('');
+	        }
+	        }
+	});
+	</script>
+</div>
