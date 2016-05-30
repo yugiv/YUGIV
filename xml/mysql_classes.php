@@ -223,6 +223,26 @@ $web="http://localhost/YUGIV/";
 			$this->placement= $placement['placement'];
 		}
 	}
+	class lastAnoUser {
+		public $placement;
+		function __construct() {
+			global $db;
+			$plquery="SELECT ano_id FROM `anonymous_posts` WHERE  DESC ";
+			$pla=$db->query($plquery);
+			$placement= $pla->fetch(PDO::FETCH_ASSOC);
+			$placement= (empty($placement['ano_id']) && !is_numeric($placement['ano_id']))?$placement['ano_id']:0;
+			$this->placement= $placement;
+		}
+	}
+	class newAnoUser {
+		function __construct() {
+			global $db;
+			$query="INSERT INTO `anonymous_posts`(`post_id`, `ano_id`, `name`, `password`) VALUES (?,?,?,?)";
+			$pla=$db->query($plquery);
+			$dd =$db->prepare($query);
+			$dd->execute(array($pid,$aid,$aname,$apass));
+		}
+	}
 	class insertIntoWall {
 		
 		function __construct($username,$placement,$pid) {

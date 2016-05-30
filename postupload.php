@@ -33,7 +33,20 @@ if (isset($_POST['post'])) {
 	if ($_POST['type']=="video post") {
 		$content="<video width='580' height='240' controls><source src='".$content."' type='video/mp4'>Your browser does not support HTML5 video.</video>";
 	}
-	if($_POST['anonymous']=="true"){
+	if($_POST['anonymous']=="true" && isset($_POST['aname'],$_POST['apass']) && $_POST['aname']!="" && $_POST['apass']!=""){
+		$anouser= new lastAnoUser();
+		$anouser= $anouser->placement+1;
+		$aname=htmlentities($_POST['aname']);
+		$password= sha1($_POST['apass']);
+		$salt='d0be2dc421be4fcd0172e5afceea3970e2f3d940';
+		$new='';
+		$d=0;
+		for($i=0;$i < strlen($password); $i++) {
+		    $new .= $salt[$i].$password[$d];
+			$d++;
+		}
+		$apass=$new;
+		new newAnoUser($id,$anouser,$aname,$apass);
 		if($_POST['view_option'] == "personal"){
 			new submitPost($id,0,$title,$view,$_POST['type'],$content);
 			$pl = new lastPlacementInUserWall($username);
