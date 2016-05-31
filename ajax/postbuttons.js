@@ -36,6 +36,7 @@ $(".down").on('click', function(){
 	var uc= u+"c";
 	var dc= name+"c";
 	$.post('http://localhost/YUGIV/xml/postdownvote.php', {name: name}, function(data){
+		alert(data);
 		if(data=="downvote"){
 			currentclassname.attr('src',"http://localhost/YUGIV/icons/reddownarrow.png");
 			if (u2.attr('src')=="http://localhost/YUGIV/icons/greenuparrow.png") {

@@ -5,6 +5,7 @@ require 'xml/functions.php';
 	$username= $un->user;
 	$username=$username['username'];
 	$rules="";
+	$order="time";
 	if (isset($_GET['filter'])) {
 		$cleanget=classer($_GET['filter']);
 			if(isset($cleanget['main']['pointscheck'])){
@@ -47,11 +48,14 @@ require 'xml/functions.php';
 			if(isset($cleanget['main']['personal'])){
 				$rules.=" AND posts.view_option!='personal'";
 			}
+			if(isset($cleanget['main']['order']) && ($cleanget['main']['order']=="points" || $cleanget['main']['order']=="upvotes" || $cleanget['main']['order']=="downvotes")){
+				$order=($cleanget['main']['order']=="points")?"upvotes-downvotes":$cleanget['main']['order'];
+			}
 	}
 	if(!empty($username)){
 		if(!isset($cleanget['main']['postchoice'])){
 			echo $rules;
-			$ps = new selectWallPosts($username,"time",$rules);
+			$ps = new selectWallPosts($username,$order,$rules);
 			$parray= $ps->array;
 		}else{
 			$rules.=" AND (posts.view_option='global'";
@@ -62,7 +66,7 @@ require 'xml/functions.php';
 				$rules.=" OR (posts.view_option='personal' AND posts.user_id=".$_SESSION['uid'].")";
 			}
 			$rules.=")";
-			$ps = new selectAllPosts("time",$rules);
+			$ps = new selectAllPosts($order,$rules);
 			$parray= $ps->array;
 			
 		}

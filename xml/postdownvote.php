@@ -1,6 +1,6 @@
 <?php
 session_start();
-require "xml/mysql_classes.php";
+require "mysql_classes.php";
 	$uid= $_SESSION['uid'];
 	$pid= substr_replace($_POST['name'] ,"",-1);
 	$vote= new userVote($uid,$pid,0,0);

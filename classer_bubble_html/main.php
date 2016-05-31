@@ -2,6 +2,16 @@
 	<div id="classertitle">Class by newest</div><br/>
 	<table id="classertable">
 		<tr>
+			<td width="300px">Order:<br />
+				<form id="myForm">
+				<label><input type="radio" name="order" value="time" checked> Time</label>
+				<label><input type="radio" name="order" value="points"> Points</label><br />
+				<label><input type="radio" name="order" value="upvotes"> Upvotes</label>
+				<label><input type="radio" name="order" value="downvotes"> Downvotes</label>
+				</form>
+			</td>
+		</tr>
+		<tr>
 			<td>
 				load from:
 			</td>
@@ -59,6 +69,9 @@
 	<script>
 		$('#loadclasser').on('click', function(){
 			var url="";
+			if($('input[name=order]:checked', '#myForm').val().length>0 || $('input[name=order]:checked', '#myForm').val()!="time"){
+				url += 'order='+$('input[name=order]:checked', '#myForm').val()+',';
+			}
 			if($("#postchoice:checked").val()=="all"){
 			url += 'postchoice=true,';
 			}
@@ -83,6 +96,7 @@
 			if($("#personalcheckbox").prop('checked')==false&&$("#friendscheckbox").prop('checked')==false&&$("#globalcheckbox").prop('checked')==false){
 				alert("at least 1 view option must be checked!");
 			}else{
+				alert($('input[name=order]:checked', '#myForm').val());
 			window.location=getmeth("main",url);
 			$.magnificPopup.close();
 			$( "#classerbox" ).remove();
