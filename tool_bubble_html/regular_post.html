@@ -14,10 +14,33 @@
 		var view_option= $(".view").val();
 		var ano = $(".anobox").is(":checked");
 		var title= $("#title").val();
-		$.post('postupload.php', {title:title,post: post, view_option: view_option,anonymous:ano, type: "regular post"}, function(data){
-			alert("hi"+data);
-			$("#post").remove();
-		});
+		if(ano==true){
+			$.get("http://localhost/YUGIV/xml/anonymous.html",function(data){
+				$( "body" ).append(data);
+				$.magnificPopup.open({
+	  				items: {
+				    src: $(data),
+				    type: 'inline'
+					},
+					closeBtnInside: false,
+					callbacks: {
+						
+						afterClose: function() {
+							$( "#anobox" ).remove();
+							$.post('postupload.php', {title:title,post: post, view_option: view_option,anonymous:ano, type: "regular", aname: $("#post").attr('aname'), apass: $("#post").attr('apass')}, function(data){
+								alert(data);
+								$("#post").remove();
+							});
+						}
+	  				}
+				});
+			}); 
+		}else{
+			$.post('postupload.php', {title:title,post: post, view_option: view_option,anonymous:ano, type: "regular"}, function(data){
+				$("#post").remove();
+			});
+		}
+		
 	});
 </script>
 </div>

@@ -107,7 +107,7 @@ $web="http://localhost/YUGIV/";
 			$this->array=$dd->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	class selectAllPosts {
+	class usslPosts {
 		public $array;
 		function __construct($order,$rules) {
 			global $db;
@@ -117,6 +117,17 @@ $web="http://localhost/YUGIV/";
 			$this->array=$dd->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
+	class anoInfo {
+		public $array;
+		function __construct($post_id) {
+			global $db;
+			$query="SELECT * FROM `anonymous_posts` WHERE post_id=".$post_id;
+			$dd =$db->prepare($query);
+			$dd->execute();
+			$this->array=$dd->fetch(PDO::FETCH_ASSOC);
+		}
+	}
+	
 	class userInfo {
 		public $user;
 		function __construct($uid) {
@@ -227,7 +238,7 @@ $web="http://localhost/YUGIV/";
 		public $placement;
 		function __construct() {
 			global $db;
-			$plquery="SELECT ano_id FROM `anonymous_posts` WHERE  DESC ";
+			$plquery="SELECT ano_id FROM `anonymous_posts` ORDER BY `ano_id` DESC";
 			$pla=$db->query($plquery);
 			$placement= $pla->fetch(PDO::FETCH_ASSOC);
 			$placement= (empty($placement['ano_id']) && !is_numeric($placement['ano_id']))?$placement['ano_id']:0;
@@ -235,10 +246,9 @@ $web="http://localhost/YUGIV/";
 		}
 	}
 	class newAnoUser {
-		function __construct() {
+		function __construct($pid,$aid,$aname,$apass) {
 			global $db;
 			$query="INSERT INTO `anonymous_posts`(`post_id`, `ano_id`, `name`, `password`) VALUES (?,?,?,?)";
-			$pla=$db->query($plquery);
 			$dd =$db->prepare($query);
 			$dd->execute(array($pid,$aid,$aname,$apass));
 		}

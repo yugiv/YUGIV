@@ -96,10 +96,6 @@ $(document).on('mouseleave', '#firstsocialbubble', function(){
 				}, 50,function(){
 				});
 });
-$(document).on('click', '#lightboxclose', function(){
-	$.magnificPopup.close();
-	$( "#peoplebox" ).remove();
-});
 $(document).on('mouseenter', '#secondsocialbubble', function(){
 	$("#tipsysocialsecond").animate({
 		    		opacity: 1

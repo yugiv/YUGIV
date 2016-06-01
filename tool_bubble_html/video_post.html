@@ -27,7 +27,7 @@
 				var title= $("#title").val();
 				var view_option= $(".view").val();
 				var ano = $(".anobox").is(":checked");
-				$.post('postupload.php', {title:title,post: videolink, view_option: view_option,anonymous:ano, type: "video post"}, function(ddata){
+				$.post('postupload.php', {title:title,post: videolink, view_option: view_option,anonymous:ano, type: "video"}, function(ddata){
 					$("#post").remove();
 				});
 			},$("#prog"));

@@ -13,6 +13,10 @@
 	</div>
 	<div id="bottomsociallightbox" class="unselectable"><div id="lightboxclose">close</div></div>
 <script>
+$(document).on('click', '#lightboxclose', function(){
+	$.magnificPopup.close();
+	$( "#peoplebox" ).remove();
+});
 	function getCookie(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(';');

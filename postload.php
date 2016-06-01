@@ -76,6 +76,14 @@ require 'xml/functions.php';
 			$ncount= $key['downvotes'];
 			$us= new userInfo($key['user_id']);
 			$user= $us->user;
+			$profile= ($user['id']==0)?"":$user['id'];
+			if($user['id']==0){
+				$ano= new anoInfo($key['post_id']);
+				$ano=$ano->array;
+				$name=$ano['name'];
+			}else{
+				$name=$user['name'];
+			}
 			$com = new commentsCount($key['post_id']);
 			$ccount = $com->ccount;
 			$c= new bigNumbersKiller($pcount);
@@ -86,7 +94,7 @@ require 'xml/functions.php';
 				echo "<table class='postbox' name='".$key['post_id']."'>
 						<tr style='width:100%;'>
 							<td>
-								<a href='".$user['profile']."'><img class='profilepicture' src='".$user['profile_picture']."'/><span class='profilename'>".$user['name']."</span></a>
+								<a href='".$profile."'><img class='profilepicture' src='".$user['profile_picture']."'/><span class='profilename'>".$name."</span></a>
 							</td>
 							<td style='width:21px;'>
 								<div name='".$key['post_id']."' class='settcontain notclick'><img name='".$key['post_id']."' class='settings' src='".$originallink."icons/settings.png'/></div>

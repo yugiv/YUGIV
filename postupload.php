@@ -8,7 +8,7 @@ if (isset($_POST['post'])) {
 	$username=$username['username'];
 	$view=$_POST['view_option'];
 	$cont=$_POST['post'];
-	if ($_POST['type']!="blog post") {
+	if ($_POST['type']!="blog") {
 		$title=coder(htmlentities($_POST['title']));
 		if (strpos($cont, '<br />')!=FALSE) {
 	    	$cont=explode( "<br />",$cont);
@@ -30,7 +30,7 @@ if (isset($_POST['post'])) {
 	}
 	$id =new latestPostId;
 	$id=$id->id +1;
-	if ($_POST['type']=="video post") {
+	if ($_POST['type']=="video") {
 		$content="<video width='580' height='240' controls><source src='".$content."' type='video/mp4'>Your browser does not support HTML5 video.</video>";
 	}
 	if($_POST['anonymous']=="true" && isset($_POST['aname'],$_POST['apass']) && $_POST['aname']!="" && $_POST['apass']!=""){
@@ -46,6 +46,7 @@ if (isset($_POST['post'])) {
 			$d++;
 		}
 		$apass=$new;
+		echo $id.$anouser.$aname.$apass;
 		new newAnoUser($id,$anouser,$aname,$apass);
 		if($_POST['view_option'] == "personal"){
 			new submitPost($id,0,$title,$view,$_POST['type'],$content);
@@ -67,8 +68,8 @@ if (isset($_POST['post'])) {
 			new submitPost($id,0,$title,$view,$_POST['type'],$content);
 			$follower= new selectUserFollowers($username);
 			$plo = new lastPlacementInUserWall($username);
-			$placment= $pl->placement +1;
-			new insertIntoWall($username, $placment, $id);
+			$placement= $plo->placement +1;
+			new insertIntoWall($username, $placement, $id);
 			foreach($follower->follower as $key){
 				$pl = new lastPlacementInUserWall($key[0]);
 				$placement= $pl->placement +1;
