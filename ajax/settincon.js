@@ -43,6 +43,17 @@ $(document).on('click','.bubble li.edit', function(){
 						$('body').append(dddata);
 						}
 					});
+				}else if(ddata.indexOf("anonymousedit.php") > -1){
+					$.post("http://localhost/YUGIV/xml/anonymousedit.php",{pid: name},function(datta){
+						$( "body" ).append(datta);
+						$.magnificPopup.open({
+			  				items: {9
+						    src: $(data),
+						    type: 'inline'
+							},
+							closeBtnInside: false
+						});
+					}); 
 				}else{
 					alert(ddata);
 				}

@@ -1,30 +1,26 @@
 <?php
     session_start();
+	require 'mysql_classes.php';
 	$uid= $_SESSION['uid'];
-	$db = new PDO('mysql:host=localhost;dbname=yugiv;charset=utf8', 'root', '');
-	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 	$pid=$_POST['name'];
 	
 	echo "<div class='bubble'>";
 	
-		if(strpos($_POST['name'],'-')== false){
-		$query="SELECT user_id FROM `posts` WHERE post_id=?";
-		$dd =$db->prepare($query);
-		$dd->execute(array($pid));
-		$key=$dd->fetch(PDO::FETCH_ASSOC);
-		if($key['user_id']==$uid){
-		echo "<ul><li class='edit' name='".$pid."'>edit</li><li class='delete' name='".$pid."'>delete</li></ul>";
+		if(strpos($_POST['name'],'-')== false && is_numeric($pid)){
+		$id= new postUserId($pid);
+		$id=$id->id;
+		$ano=($id['user_id']==0)?"a":"";
+		if($id['user_id']==$uid || $id['user_id']==0){
+		echo "<ul><li class='edit' name='".$pid.$ano."'>edit</li><li class='delete' name='".$pid.$ano."'>delete</li></ul>";
 		}	
 		}else{
 			$ids=explode("-", $_POST['name']);
 			if(count($ids) == 2){
-				$query="SELECT user_id FROM `comments` WHERE post_id=? AND comment_id=?";
-				$dd =$db->prepare($query);
-				$dd->execute(array($ids[0], $ids[1]));
-				$key=$dd->fetch(PDO::FETCH_ASSOC);
-				if($key['user_id']==$uid){
-				echo "<ul><li class='edit' name='".$pid."'>edit</li><li class='delete' name='".$pid."'>delete</li></ul>";
+				$id=new commentUserId($ids[0], $ids[1]);
+				$id=$id->id;
+				$ano=($id['user_id']==0)?"a":"";
+				if($id['user_id']==$uid || $id['user_id']==0){
+				echo "<ul><li class='edit' name='".$pid.$ano."'>edit</li><li class='delete' name='".$pid.$ano."'>delete</li></ul>";
 				}
 			}elseif(count($ids) == 3){
 				

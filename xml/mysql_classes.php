@@ -22,6 +22,27 @@ $web="http://localhost/YUGIV/";
 			return 1;
 		}
 	}
+	class postUserId {
+		public $id;
+		function __construct($pid) {
+			global $db;
+			$query="SELECT user_id FROM `posts` WHERE post_id=".$pid;
+			$dd =$db->prepare($query);
+			$dd->execute(array($pid));
+			$this->id=$dd->fetch(PDO::FETCH_ASSOC);
+		}
+	}
+	class commentUserId {
+		public $id;
+		function __construct($pid,$cid) {
+			global $db;
+			$query="SELECT user_id FROM `comments` WHERE post_id=? AND comment_id=?";
+			$dd =$db->prepare($query);
+			$dd->execute(array($pid,$cid));
+			$this->id=$dd->fetch(PDO::FETCH_ASSOC);
+		}
+	}
+	
 	class commentsLoad{
 		public $comments;
 		function __construct($pid){
