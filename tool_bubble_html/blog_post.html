@@ -1,27 +1,26 @@
-
-<div id="post" class="big blog_post">
-	<form name="meow">
-
-<p>Entry Title: <input name="title" id="title" type="text" size="80" maxlength="80" /></p>
 <script>
-function nushi()
+function nushi() //a function for the color change button
 {
 	var c = window.prompt("Enter a color");
 	document.body.style.foregroundColor=c;
 }
-function nushii()
+function nushii() //a function for the font change button
 {
 	var d = window.prompt("Enter a font");
 	document.body.style.fontFamily=d;
 }
-function nushiii()
+function nushiii() //a function for the size change button
 {
 	var e = window.prompt("Enter a size");
 	document.body.style.fontSize=e;
 }
-</script>
-<textarea name="blogtext" value="enter text here"></textarea>
-<select style="margin-left: 6px;" name="view_option" class="view">
+</script>	
+<div id="post" class="big blog_post">
+	<form name="meow"> 
+<p>Entry Title: <input name="title" id="title" type="text" size="80" maxlength="80" /></p> <!--this is were you input the title-->
+
+<textarea name="blogtext" value="enter text here"></textarea> <!--this is where you input the text-->
+<select style="margin-left: 6px;" name="view_option" class="view"> <!--style selection-->
 		<option>global</option>
 		<option>friends</option>
 		<option>personal</option>
