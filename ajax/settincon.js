@@ -47,7 +47,7 @@ $(document).on('click','.bubble li.edit', function(){
 					$.post("http://localhost/YUGIV/xml/anonymousedit.php",{pid: name},function(datta){
 						$( "body" ).append(datta);
 						$.magnificPopup.open({
-			  				items: {9
+			  				items: {
 						    src: $(data),
 						    type: 'inline'
 							},
