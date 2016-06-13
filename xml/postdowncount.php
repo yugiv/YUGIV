@@ -1,9 +1,8 @@
 <?php
 require 'mysql_classes.php';
+require 'functions.php';
 	$pid= substr_replace($_POST['name'] ,"",-1);
-	$ncount= new selectPostById($pid);
-	$ncount= $ncount->array;
-	$ncount= $ncount['downvotes'];
-	$d= new bigNumbersKiller($ncount);
-	$ncount= $d->result;
+	$ncount= new posts();
+	$ncount= $ncount->simpleSelect('post_id',$pid);
+	$ncount= bignumberkiller($ncount['downvotes']);
 	echo $ncount;

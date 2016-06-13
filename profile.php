@@ -1,13 +1,14 @@
 <?php
 if(isset($_GET['user'])){
 	require "require.php";
-	$usern= new userId($_GET['user']);
-	$usern= $usern->uid;
+	$usern= new users();
+	$usern= $usern->userInfo($_GET['user']);
+	$usern=$usern['id'];
 	if(!empty($usern)){
-	$puser= new userInfo($usern);
-	$puser= $puser->user;
-	$array =new userInfo($_SESSION['uid']);
-	$array= $array->user;
+	$puser= new users();
+	$puser= $puser->userInfo($usern);
+	$array =new users();
+	$array= $array->userInfo($_SESSION['uid']);
 	$fname= explode(" ", $array['name']);
 	$fname= $fname[0];
 	if(!isset($_GET['tag']) || (isset($_GET['tag']) && $_GET['tag'] != "folders" && $_GET['tag'] != "friends" && $_GET['tag'] != "followers" && $_GET['tag'] != "info")){
@@ -22,12 +23,12 @@ if(isset($_GET['user'])){
 		$click="info";
 	}
 	if($array['username'] != $puser['username']){
-	$friend= new checkFriend($puser['id'],$array['id']);
-	$friend= $friend->check;
-	$frequest= new checkFriendRequests($array['id'],$puser['id']);
-	$frequest= $frequest->check;
-	$ofrequest= new checkFriendRequests($puser['id'], $array['id']);
-	$ofrequest= $ofrequest->check;
+	$friend= new friends();
+	$friend= $friend->checkFriend($puser['id'],$array['id']);
+	$frequest= new friend_requests();
+	$frequest= $frequest->checkFriendRequests($array['id'],$puser['id']);
+	$ofrequest= new friend_requests();
+	$ofrequest= $ofrequest->checkFriendRequests($puser['id'], $array['id']);
 	if ($friend==TRUE) {
 		$fbutton="friend";
 	}elseif($frequest==TRUE){
@@ -37,8 +38,8 @@ if(isset($_GET['user'])){
 	}else{
 		$fbutton="send friend request";
 	}
-	$follow= new checkFollow($_SESSION['uid'],$puser['id']);
-	$follow= $follow->check;
+	$follow= new follow_info();
+	$follow= $follow->checkFollow($_SESSION['uid'],$puser['id']);
 	$follow= ($follow)?"following":"follow?";
 	}
 ?>

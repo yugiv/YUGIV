@@ -28,32 +28,22 @@ $(document).on('click',function() {
 });
 $(document).on('click','.bubble li.edit', function(){
 	var name = $(this).attr('name');
-	var content= $("table[name='"+name+"'] .content").html().replace(/\<br>/g,'\n');
-	var title= $("table[name='"+name+"'] .ptitle").html();
+	var content= $("table[name='"+name.replace(/\D/g,'')+"'] .content").html().replace(/\<br>/g,'\n');
+	var title= $("table[name='"+name.replace(/\D/g,'')+"'] .ptitle").html();
 	closesettcontain();
 	$.post('http://localhost/YUGIV/xml/edit.php',{name: name,title: title}, function(data){
+		alert(data);
 		if(data.indexOf("post") > -1){
-			var linker= data.slice(0, -5);
+			var linker= data.slice(0, -4);
+			alert(linker);
 			$.post('http://localhost/YUGIV/xml/edit_post.php',{type: linker}, function(ddata){
-				if(ddata!=""){
+				if(data!=""){
 					$.post(ddata,{title:title,name: name,content:content}, function(dddata){
-						alert(dddata);
 						if(dddata!=""){
 						$("#post").remove();
 						$('body').append(dddata);
 						}
 					});
-				}else if(ddata.indexOf("anonymousedit.php") > -1){
-					$.post("http://localhost/YUGIV/xml/anonymousedit.php",{pid: name},function(datta){
-						$( "body" ).append(datta);
-						$.magnificPopup.open({
-			  				items: {
-						    src: $(data),
-						    type: 'inline'
-							},
-							closeBtnInside: false
-						});
-					}); 
 				}else{
 					alert(ddata);
 				}

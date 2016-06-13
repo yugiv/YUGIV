@@ -8,27 +8,21 @@ $fpass = coder($_POST['fpass']);
 $spass = coder($_POST['spass']);
 	$name=ucfirst(strtolower($fname)).' '.ucfirst(strtolower($lname));
 	$username=strtolower($fname.$lname);
-	$usern= new autoUsernameGenerator($username);
-	$username= $usern->username;
+	$usern= new users();
+	$username= $usern->autoUsernameGenerator($username);
 	$password= $fpass;
-	$password= sha1($password);
-	$salt='d0be2dc421be4fcd0172e5afceea3970e2f3d940';
-	$new='';
-	$d=0;
-	for($i=0;$i < strlen($password); $i++) {
-	    $new .= $password[$d].$salt[$i];
-		$d++;
-	}
-	$password=$new;
+	$password= password($password);
 	$birth= $_POST['year']."-".$_POST['month']."-".$_POST['day'];
 	if($fpass==$spass && $username!="" && $name!="" && $birth !=""){
 		$tname=$username+"_wall";
 		$id= new latestUserId;
 		$id= $id->id;
-		new createNewUser($id,$username,$name,$password,$birth);
-		new createNewWall($username);
-		$id= new userId($username);
-		$id=$id->uid;
+		$r=new users();
+		$r->createNewUser($id,$username,$name,$password,$birth);
+		$z=new walls();
+		$z->createNewWall($username);
+		$id= new users();
+		$id=$id->userId($username);
 		$_SESSION['uid']= $id;
 		if(is_numeric($_POST['phone']) && $_POST['phone'] != ""){
 			new insertPhonenumber($_SESSION['uid'],$_POST['phone']);

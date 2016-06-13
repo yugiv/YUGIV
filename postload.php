@@ -1,8 +1,8 @@
 <?php
 require 'xml/functions.php';
 	$uid= $_SESSION['uid'];
-	$un = new userInfo($uid);
-	$username= $un->user;
+	$un = new users();
+	$username= $un->userInfo($uid);
 	$username=$username['username'];
 	$rules="";
 	if (isset($_GET['filter'])) {
@@ -51,8 +51,8 @@ require 'xml/functions.php';
 	if(!empty($username)){
 		if(!isset($cleanget['main']['postchoice'])){
 			echo $rules;
-			$ps = new selectWallPosts($username,"time",$rules);
-			$parray= $ps->array;
+			$ps = new selectWithFilter($rules,"time");
+			$parray= $ps->wallPosts($username);
 		}else{
 			$rules.=" AND (posts.view_option='global'";
 			if(!isset($cleanget['main']['friends'])){
@@ -70,26 +70,24 @@ require 'xml/functions.php';
 		
 		foreach($parray as $key){
 			$permition= true;
-			$uv = new userVote($uid,$key['post_id'],0,0);
-			$uservote = $uv->vote;
+			$uv = new votes($key['post_id'],0,0);
+			$uservote = $uv->userVote($uid);
 			$pcount= $key['upvotes'];
 			$ncount= $key['downvotes'];
-			$us= new userInfo($key['user_id']);
-			$user= $us->user;
+			$us= new users();
+			$user= $us->userInfo($key['user_id']);
 			$profile= ($user['id']==0)?"":$user['id'];
 			if($user['id']==0){
-				$ano= new anoInfo($key['post_id']);
-				$ano=$ano->array;
+				$ano= new anonymous_posts;
+				$ano=$ano->simpleSelect("post_id", $key['post_id']);
 				$name=$ano['name'];
 			}else{
 				$name=$user['name'];
 			}
-			$com = new commentsCount($key['post_id']);
-			$ccount = $com->ccount;
-			$c= new bigNumbersKiller($pcount);
-			$pcount= $c->result;
-			$d= new bigNumbersKiller($ncount);
-			$ncount= $d->result;
+			$com = new comments();
+			$ccount = $com->commentsCount($key['post_id']);
+			$pcount= bignumberkiller($pcount);
+			$ncount= bignumberkiller($ncount);
 			if($key['view_option'] == "global"){
 				echo "<table class='postbox' name='".$key['post_id']."'>
 						<tr style='width:100%;'>

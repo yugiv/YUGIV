@@ -9,22 +9,22 @@ if (!isset($_SESSION['uid']) && !isset($_COOKIE['username'],$_COOKIE['password']
 if (isset($_COOKIE['username']) && isset($_COOKIE['password']) && !isset($_SESSION['uid'])) {
 	$username=$_COOKIE['username'];
 	$password=$_COOKIE['password'];			
-	$uid= new checkLog($username,$password);
-	$uid= $uid->array;
+	$uid= new users();
+	$uid= $uid->checkLog($username,$password);
 	echo $username.$password.$uid;
 	$_SESSION['uid']=$uid['id'];
 }
 if(isset($_SESSION['uid']) && !isset($_COOKIE['username'],$_COOKIE['password'])){
-	$t= new userInfo($_SESSION['uid']);
-	$t= $t->user;
+	$t= new users();
+	$t= $t->userInfo($_SESSION['uid']);
 	$username=$t['username'];
 	$password=$t['password'];
 	setcookie('username',$username);
 	setcookie('password',$password);
 }
 if(isset($_SESSION['uid']) && isset($_COOKIE['username'],$_COOKIE['password'])){
-	$t= new userInfo($_SESSION['uid']);
-	$t= $t->user;
+	$t= new users();
+	$t= $t->userInfo($_SESSION['uid']);
 	$username=$t['username'];
 	$password=$t['password'];
 	$name= explode(" ", $t['name']);

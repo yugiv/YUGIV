@@ -56,26 +56,23 @@ if(isset($_GET['tag'])){
 				$rules.=" OR (posts.view_option='personal' AND posts.user_id=".$_SESSION['uid'].")";
 			}
 			$rules.=")";
-	$ps = new loadPostsByUserId($puid,$order,$rules);
-	$parray= $ps->array;
-	$un = new userInfo($_SESSION['uid']);
-	$usern= $un->user;
+	$ps = new selectWithFilter($order,$rules);
+	$parray= $ps->loadPostsByUserId($puid);
+	$un = new users();
+	$usern= $un->userInfo($_SESSION['uid']);
 	$usern=$usern['username'];
 	echo "<div id='posts'>";
 		foreach($parray as $key){
-			$uv = new userVote($_SESSION['uid'],$key['post_id'],0,0);
-			$uservote = $uv->vote;
+			$uv = new votes($key['post_id'],0,0);
+			$uservote = $uv->userVote($_SESSION['uid']);
 			$pcount= $key['upvotes'];
 			$ncount= $key['downvotes'];
-			$us= new userInfo($key['user_id']);
-			$user= $us->user;
+			$us= new users();
+			$user= $us->userInfo($key['user_id']);
 			$ccount = $key['comments'];
-			$c= new bigNumbersKiller($pcount);
-			$pcount= $c->result;
-			$d= new bigNumbersKiller($ncount);
-			$ncount= $d->result;
-			$e=new bigNumbersKiller($ccount);
-			$ccount=$e->result;
+			$pcount= bignumberkiller($pcount);
+			$ncount= bignumberkiller($ncount);
+			$ccount=bignumberkiller($ccount);
 			if($key['view_option'] == "global"){
 				echo "<table class='postbox' name='".$key['post_id']."'>
 						<tr style='width:100%;'>

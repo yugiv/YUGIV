@@ -1,9 +1,8 @@
 <?php
 require 'mysql_classes.php';
+require 'functions.php';
 	$pid= substr_replace($_POST['name'] ,"",-1);
-	$pcount= new selectPostById($pid);
-	$pcount= $pcount->array;
-	$pcount= $pcount['upvotes'];
-	$c= new bigNumbersKiller($pcount);
-	$pcount= $c->result;
+	$pcount= new postsSelect();
+	$pcount= $pcount->regularPosts('post_id',$pid);
+	$pcount= bignumberkiller($pcount['upvotes']);
 	echo $pcount;

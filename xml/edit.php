@@ -1,5 +1,5 @@
 <?php
-if(preg_match('/^[^a-zA-Z]*$/', $_POST['name'])){
+if(ctype_alnum($_POST['name'])){
 session_start();
 require "mysql_classes.php";
 $uid = $_SESSION['uid'];
@@ -9,17 +9,18 @@ if(strpos($name,'-')== false){
 	$ch= new checkIfPostExists($uid,$name);
 	$exis= $ch->bool;
 	if($exis){
-		$out= new selectPostById($name);
-		$out= $out->array;
-		echo $out['type'];
+		$out= new postsSelect();
+		$out= $out->regularPosts("post_id", $name);
+		echo $out['type']."post";
 	}
 	}else{
 		$ch= new checkIfPostExists(0,$name);
 		$exis= $ch->bool;
+		$name=(int)$name;
 		if($exis){
-			$out= new selectPostById($name);
-			$out= $out->array;
-			echo $out['type'].'anonymous';
+			$out= new postsSelect();
+			$out= $out->regularPosts("post_id", $name);
+			echo $out['type']."post";
 		}
 	}
 }else{

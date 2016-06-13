@@ -1,24 +1,24 @@
 <?php
-$documentroot="C:/xampp/htdocs/YUGIV/";
 session_start();
-require $documentroot."xml/mysql_classes.php";
+require "mysql_classes.php";
 $pid=$_POST['name'];
 $content=wordwrap($_POST['content'],50,'<br>',TRUE);
 $time=date('Y-m-d H:i:s');
 $uid= $_SESSION['uid'];
 if(!isset($_POST['anonymous'])){
-	$id = new latestCommentID($pid);
-	$id=$id->cid+1;
-	new newCommentUpload($id,$pid,$uid,$time,$content);
-	$cl= new commentsLoad($pid);
-	$array = $cl->comments;
+	$id = new comments();
+	$id=$id->latestCommentID($pid)+1;
+	$f=new comments();
+	$f->newCommentUpload($id,$pid,$uid,$time,$content);
+	$cl= new comments();
+	$array = $cl->commentsLoad($pid);
 foreach ($array as $key) {
-	$vote= new userVote($_SESSION['uid'], $_POST['name'], $key['comment_id'],0);
-	$vote=$vote->vote;
+	$vote= new votes($_POST['name'], $key['comment_id'],0);
+	$vote=$vote->userVote($_SESSION['uid']);
 	$pcount= $key['upvotes'];
 	$ncount= $key['downvotes'];
-	$user= new userInfo($key['user_id']);
-	$user=$user->user;
+	$user= new users;
+	$user=$user->userInfo($key['user_id']);
 	$uarrow= ($vote=="upvote")?"http://localhost/YUGIV/icons/greenuparrow.png":"http://localhost/YUGIV/icons/greyuparrow.png";
 	$darrow= ($vote=="downvote")?"http://localhost/YUGIV/icons/reddownarrow.png":"http://localhost/YUGIV/icons/greydownarrow.png";
 	echo "<table class='commentbox' name='".$key['post_id']."-".$key['comment_id']."'>
@@ -56,18 +56,19 @@ foreach ($array as $key) {
 	
 }
 }else{
-	$id = new latestCommentID($pid);
-	$id=$id->cid+1;
-	new newCommentUpload($id,$pid,0,$time,$content);
-	$cl= new commentsLoad($pid);
-	$array = $cl->comments;
+	$id = new comments();
+	$id=$id->latestCommentID($pid)+1;
+	$f=new comments();
+	$f->newCommentUpload($id,$pid,0,$time,$content);
+	$cl= new comments;
+	$array = $cl->commentsLoad($pid);
 foreach ($array as $key) {
-	$vote= new userVote($_SESSION['uid'], $_POST['name'], $key['comment_id'],0);
-	$vote=$vote->vote;
+	$vote= new votes($_POST['name'], $key['comment_id']);
+	$vote=$vote->userVote($_SESSION['uid']);
 	$pcount= $key['upvotes'];
 	$ncount= $key['downvotes'];
-	$user= new userInfo($key['user_id']);
-	$user=$user->user;
+	$user= new users;
+	$user=$user->userInfo($key['user_id']);
 	$uarrow= ($vote=="upvote")?"http://localhost/YUGIV/icons/greenuparrow.png":"http://localhost/YUGIV/icons/greyuparrow.png";
 	$darrow= ($vote=="downvote")?"http://localhost/YUGIV/icons/reddownarrow.png":"http://localhost/YUGIV/icons/greydownarrow.png";
 	echo "<table class='commentbox' name='".$key['post_id']."-".$key['comment_id']."'>

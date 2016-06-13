@@ -1,8 +1,7 @@
 <?php
 if(preg_match('/[^a-zA-Z]+/', $_POST['name'])){
 session_start();
-$documentroot="C:/xampp/htdocs/YUGIV/";
-require $documentroot."xml/mysql_classes.php";
+require "mysql_classes.php";
 $uid = $_SESSION['uid'];
 $name = $_POST['name'];
 if(strpos($name,'-')== false){

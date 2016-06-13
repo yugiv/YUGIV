@@ -3,20 +3,21 @@ session_start();
 require 'mysql_classes.php';
 	$uid= $_SESSION['uid'];
 	$pid= substr_replace($_POST['name'] ,"",-1);
-	$uv= new userVote($uid,$pid,0,0);
-	$vote= $uv->vote;
+	$uv= new votes($pid,0,0);
+	$vote= $uv->userVote($uid);
+	$f=new posts();
 	if ($vote=="upvote") {
-	new voteDelete($uid,$pid,0,0);
-	new postUpvotesUpdate($pid,-1);
+		$uv->voteDelete($uid);
+		$f->postUpvotesUpdate($pid,-1);
 		echo "none";
 	}elseif ($vote=="downvote") {
-	new voteUpdate("upvote",$uid,$pid,0,0);
-	new postUpvotesUpdate($pid,1);
-	new postDownvotesUpdate($pid,-1);
+		$uv->voteUpdate($uid, "upvote");
+		$f->postUpvotesUpdate($pid,1);
+		$f->postDownvotesUpdate($pid,-1);
 		echo "upvote";
 	}else{
-	new voteInsert("upvote",$uid,$pid,0,0);
-	new postUpvotesUpdate($pid,1);
+		$uv->voteInsert($uid, "upvote");
+		$f->postUpvotesUpdate($pid,1);
 		echo "upvote";
 	}
 		

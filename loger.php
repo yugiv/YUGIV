@@ -13,8 +13,8 @@ if(isset($_POST['username']) && isset($_POST['password']) && $_POST['username']!
 		$d++;
 	}
 	$password=$new;
-	$uid= new checkLog($username,$password);
-	$uid= $uid->array;
+	$uid= new users;
+	$uid= $uid->checkLog($username,$password);
 	if(!empty($uid)){
 		$_SESSION['uid']=$uid['id'];
 		echo "done";
