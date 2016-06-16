@@ -1,13 +1,14 @@
 <?php
 session_start();
     require '../xml/mysql_classes.php';
-	$username = new userId($_POST['username']);
-	$username= $username->uid;
-	new sendFriendRequest($_SESSION['uid'],$username);
-	$fcheck= new checkFollow($_SESSION['uid'],$username);
-	$fcheck= $fcheck->check;
+	$us = new users();
+	$username= $us->userInfoByUsername($_POST['username']);
+	$re=new friend_requests($_SESSION['uid'],$username['id']);
+	$re->send();
+	$f= new follow_info();
+	$fcheck= $f->checkFollow($_SESSION['uid'],$username['id']);
 	if(!$fcheck){
-		new insertFollow($_SESSION['uid'],$username);
+		$f->insertFollow($_SESSION['uid'],$username['id']);
 	}
 	echo 'done';
 	

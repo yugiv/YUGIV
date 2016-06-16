@@ -1,10 +1,10 @@
 <?php
 session_start();
 require "mysql_classes.php";
-$pid=$_POST['name'];
+$pid=(int)$_POST['name'];
 $content=wordwrap($_POST['content'],50,'<br>',TRUE);
 $time=date('Y-m-d H:i:s');
-$uid= $_SESSION['uid'];
+$uid= (int)$_SESSION['uid'];
 if(!isset($_POST['anonymous'])){
 	$id = new comments();
 	$id=$id->latestCommentID($pid)+1;
@@ -14,7 +14,7 @@ if(!isset($_POST['anonymous'])){
 	$array = $cl->commentsLoad($pid);
 foreach ($array as $key) {
 	$vote= new votes($_POST['name'], $key['comment_id'],0);
-	$vote=$vote->userVote($_SESSION['uid']);
+	$vote=$vote->userVote($uid);
 	$pcount= $key['upvotes'];
 	$ncount= $key['downvotes'];
 	$user= new users;
@@ -63,8 +63,8 @@ foreach ($array as $key) {
 	$cl= new comments;
 	$array = $cl->commentsLoad($pid);
 foreach ($array as $key) {
-	$vote= new votes($_POST['name'], $key['comment_id']);
-	$vote=$vote->userVote($_SESSION['uid']);
+	$vote= new votes($pid, $key['comment_id']);
+	$vote=$vote->userVote($uid);
 	$pcount= $key['upvotes'];
 	$ncount= $key['downvotes'];
 	$user= new users;

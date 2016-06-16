@@ -16,7 +16,7 @@ require '../require.php';
 				if(data=="done")
 				$('.friendstuff').text("send friend request");
 				else
-				alert('fuk u hacker');
+				alert(data);
 			});
 		$.magnificPopup.close();
 	});

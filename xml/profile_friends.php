@@ -2,21 +2,18 @@
 $url= $_SERVER['PHP_SELF'];
 	$url=substr($url, 16);
 	$url=substr($url,0,-4);
-    $friends= new selectFriends($url);
-	$friends= $friends->array;
+	$us= new users();
+	$user_id= $us->userInfoByUsername($username);
+    $friends= new friends;
+	$friends= $friends->selectFriends($user_id['id']);
 	echo "<div id='profileboxfriends'>";
 	if(!empty($friends)){
 	foreach ($friends as $key) {
-		if($key['username']== $username){
-			$id= new userId($key['friend']);
-			$id= $id->uid;
-			$user= new userInfo($id);
-			$user= $user->user;
+		echo $key['user_id']." ".$user_id['id'];
+		if($key['user_id']!= $user_id['id']){
+			$user= $us->userInfoById($key['friend']);
 		}else{
-			$id= new userId($key['username']);
-			$id= $id->uid;
-			$user= new userInfo($id);
-			$user= $user->user;
+			$user= $us->userInfoById($key['user_id']);
 		}
 		echo "<div class='plist unselectable'><a href='".$user['profile']."'><img class='profilepicture' src='".$user['profile_picture']."'/><span class='profilename'>".$user['name']."</span></a></div>";
 	}

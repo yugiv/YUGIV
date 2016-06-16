@@ -1,8 +1,9 @@
 <?php
     session_start();
-    require '../xml/mysql_classes.php';
-	$username = new userId($_POST['username']);
-	$username= $username->uid;
-	new unfriend($_SESSION['uid'],$username);
+    require 'mysql_classes.php';
+	$username = new users();
+	$username= $username->userInfoByUsername($_POST['username']);
+	$fr=new friends();
+	$fr->unfriend($_SESSION['uid'],$username['id']);
 	echo 'done';
 ?>

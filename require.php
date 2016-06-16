@@ -16,7 +16,7 @@ if (isset($_COOKIE['username']) && isset($_COOKIE['password']) && !isset($_SESSI
 }
 if(isset($_SESSION['uid']) && !isset($_COOKIE['username'],$_COOKIE['password'])){
 	$t= new users();
-	$t= $t->userInfo($_SESSION['uid']);
+	$t= $t->userInfoById($_SESSION['uid']);
 	$username=$t['username'];
 	$password=$t['password'];
 	setcookie('username',$username);
@@ -24,7 +24,7 @@ if(isset($_SESSION['uid']) && !isset($_COOKIE['username'],$_COOKIE['password']))
 }
 if(isset($_SESSION['uid']) && isset($_COOKIE['username'],$_COOKIE['password'])){
 	$t= new users();
-	$t= $t->userInfo($_SESSION['uid']);
+	$t= $t->userInfoById($_SESSION['uid']);
 	$username=$t['username'];
 	$password=$t['password'];
 	$name= explode(" ", $t['name']);

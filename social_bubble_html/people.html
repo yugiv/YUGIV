@@ -82,6 +82,7 @@ $(document).on('click', '#lightboxclose', function(){
 	$(document).off('click','.requestaccept').on('click', '.requestaccept',function(e){
 		var username= $(this).attr('data');
 		$.post("http://localhost/YUGIV/xml/acceptboxrequest.php",{username:username},function(data){
+			alert(data);
 			if(data=="done")
 			$("div[data='"+username+"']").remove();
 		});
@@ -89,6 +90,7 @@ $(document).on('click', '#lightboxclose', function(){
 	$(document).off('click','.requestrefuse').on('click','.requestrefuse', function(e){
 		var username= $(this).attr('data');
 		$.post("http://localhost/YUGIV/xml/refuseboxrequest.php",{username:username},function(data){
+			alert(data);
 			if(data=="done")
 			$("div[data='"+username+"']").remove();
 		});

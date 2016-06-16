@@ -3,7 +3,9 @@ $(".friendstuff").on("click", function () {
 	var username = url.split("profiles/");
 	username= username[1].split("/");
 	username= username[0];
+	alert("hi");
 	$.post('http://localhost/YUGIV/xml/friendbuttondetecter.php',{username:username},function(ddata){
+		alert(ddata);
 		if(ddata!=""){
 		$.get(ddata, function(data){
 			$( "body" ).append(data);

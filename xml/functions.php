@@ -41,7 +41,7 @@
 		$new='';
 		$d=0;
 		for($i=0;$i < strlen($password); $i++) {
-		    $new .= $salt[$i].$password[$d];
+		    $new .= $password[$d].$salt[$i];
 			$d++;
 		}
 		return $new;

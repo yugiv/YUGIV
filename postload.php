@@ -2,7 +2,7 @@
 require 'xml/functions.php';
 	$uid= $_SESSION['uid'];
 	$un = new users();
-	$username= $un->userInfo($uid);
+	$username= $un->userInfoById($uid);
 	$username=$username['username'];
 	$rules="";
 	if (isset($_GET['filter'])) {
@@ -75,7 +75,7 @@ require 'xml/functions.php';
 			$pcount= $key['upvotes'];
 			$ncount= $key['downvotes'];
 			$us= new users();
-			$user= $us->userInfo($key['user_id']);
+			$user= $us->userInfoById($key['user_id']);
 			$profile= ($user['id']==0)?"":$user['id'];
 			if($user['id']==0){
 				$ano= new anonymous_posts;

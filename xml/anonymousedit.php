@@ -1,8 +1,8 @@
 <?php
 require 'mysql_classes.php';
 $pid=(int)$_POST['pid'];
-$ano= new anoInfo($pid);
-$ano= $ano->array;
+$ano= new anonymous_posts;
+$ano= $ano->simpleSelect("post_id",$pid);
 ?>
 <div id="anobox" pid="<?=$pid?>">
 	<label><input type="text" id="anonymousFirst" value="<?=$ano['name']?>" disabled/></label><br />

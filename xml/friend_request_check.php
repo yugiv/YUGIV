@@ -1,8 +1,8 @@
 <?php
 session_start();
     require 'mysql_classes.php';
-	$check= new selectFriendRequests($_SESSION['uid']);
-	$check= $check->array;
+	$check= new friend_requests();
+	$check= $check->selectFriendRequests($_SESSION['uid']);
 	if(!empty($check)){
 		echo "true";
 	}

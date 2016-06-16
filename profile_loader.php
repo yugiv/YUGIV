@@ -2,8 +2,9 @@
 require 'xml/functions.php';
 if(isset($_GET['tag'])){
 	$order="time";
-	$puid= new userId($_GET['user']);
-	$puid= $puid->uid;
+	$puid= new users();
+	$puid= $puid->userInfoByUsername($_GET['user']);
+	$puid=$puid['id'];
 	$rules="";
 	if(isset($_GET['filter'])){
 	$cleanget=classer($_GET['filter']);
@@ -56,10 +57,10 @@ if(isset($_GET['tag'])){
 				$rules.=" OR (posts.view_option='personal' AND posts.user_id=".$_SESSION['uid'].")";
 			}
 			$rules.=")";
-	$ps = new selectWithFilter($order,$rules);
+	$ps = new selectWithFilter($rules,$order);
 	$parray= $ps->loadPostsByUserId($puid);
 	$un = new users();
-	$usern= $un->userInfo($_SESSION['uid']);
+	$usern= $un->userInfoById((int)$_SESSION['uid']);
 	$usern=$usern['username'];
 	echo "<div id='posts'>";
 		foreach($parray as $key){
@@ -68,7 +69,7 @@ if(isset($_GET['tag'])){
 			$pcount= $key['upvotes'];
 			$ncount= $key['downvotes'];
 			$us= new users();
-			$user= $us->userInfo($key['user_id']);
+			$user= $us->userInfoById($key['user_id']);
 			$ccount = $key['comments'];
 			$pcount= bignumberkiller($pcount);
 			$ncount= bignumberkiller($ncount);

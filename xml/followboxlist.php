@@ -1,11 +1,11 @@
 <?php
 session_start();
     require 'mysql_classes.php';
-	$array= new selectFollowing($_SESSION['uid']);
-	$array= $array->array;
+	$array= new follow_info();
+	$array= $array->selectFollowing((int)$_SESSION['uid']);
 	foreach ($array as $key) {
-		$friend =new userInfo($key['followed_id']);
-		$friend= $friend->user;
+		$friend =new users();
+		$friend= $friend->userInfoById((int)$key['followed_id']);
 		echo "<div class='plist unselectable'><a href='".$friend['profile']."'><img class='profilepicture' src='".$friend['profile_picture']."'/><div class='searchname'>".$friend['name']."</div><div class='searchusername'>@".$friend['username']."</div></a></div>";
 	}
 ?>

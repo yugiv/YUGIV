@@ -1,16 +1,17 @@
 <?php
-$documentroot="C:/xampp/htdocs/YUGIV/";
 session_start();
-require $documentroot."xml/mysql_classes.php";
-$c= new commentsLoad($_POST['name']);
-$carray= $c->comments;
+require "mysql_classes.php";
+$uid=(int)$_SESSION['uid'];
+$pid=(int)$_POST['name'];
+$c= new comments();
+$carray= $c->commentsLoad($pid);
 foreach ($carray as $key) {
-	$vote= new userVote($_SESSION['uid'], $_POST['name'], $key['comment_id'],0);
-	$vote=$vote->vote;
+	$vote= new votes($pid, (int)$key['comment_id'],(int)0);
+	$vote=$vote->userVote($uid);
 	$pcount= $key['upvotes'];
 	$ncount= $key['downvotes'];
-	$user= new userInfo($key['user_id']);
-	$user=$user->user;
+	$user= new users();
+	$user=$user->userInfo((int)$key['user_id']);
 	$uarrow= ($vote=="upvote")?"http://localhost/YUGIV/icons/greenuparrow.png":"http://localhost/YUGIV/icons/greyuparrow.png";
 	$darrow= ($vote=="downvote")?"http://localhost/YUGIV/icons/reddownarrow.png":"http://localhost/YUGIV/icons/greydownarrow.png";
 	echo "<table class='commentbox' name='".$key['post_id']."-".$key['comment_id']."'>

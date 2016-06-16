@@ -42,7 +42,7 @@ $web="http://localhost/YUGIV/";
 		}
 		public function postUpvotesUpdate($pid,$add) {
 			global $db;
-			$pc = new postsSelect();
+			$pc = new posts();
 			$pcount= $pc->simpleSelect("post_id", $pid);
 			$pcount= $pcount['upvotes']+$add;
 			$wquery="UPDATE `posts` SET `upvotes`=? WHERE `post_id`=?";
@@ -51,7 +51,7 @@ $web="http://localhost/YUGIV/";
 		}
 		public function postDownvotesUpdate($pid,$add) {
 			global $db;
-			$pc = new postsSelect();
+			$pc = new posts();
 			$pcount= $pc->simpleSelect("post_id", $pid);
 			$pcount= $pcount['downvotes']+$add;
 			$wquery="UPDATE `posts` SET `downvotes`=? WHERE `post_id`=?";
@@ -182,15 +182,15 @@ $web="http://localhost/YUGIV/";
 			global $db;
 			$query="SELECT * FROM `friend_requests` WHERE `sending`=? AND `receiving`=?";
 			$com=$db->prepare($query);
-			$com->execute(array($this->sending,$this->receiving));
+			$com->execute(array($this->sender,$this->receiver));
 			$ccount=$com->rowCount();
-			$this->check=($ccount>0)?true:false;
+			return ($ccount>0)?true:false;
 		}
 		public function receivedFriendRequests() {
 			global $db;
 			$query="SELECT * FROM `friend_requests` WHERE `receiving`=?";
 			$com=$db->prepare($query);
-			$com->execute(array($this->receiving));
+			$com->execute(array($this->receiver));
 			return $com->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
@@ -313,7 +313,7 @@ $web="http://localhost/YUGIV/";
 		}
 	}
 	class users{
-		public function userInfo($uid){
+		public function userInfoById($uid){
 			global $db;
 			$inquery="SELECT * FROM `users` WHERE id=".$uid;
 			$userpid=$db->prepare($inquery);
@@ -321,7 +321,15 @@ $web="http://localhost/YUGIV/";
 			$name=$userpid->fetch(PDO::FETCH_ASSOC);
 			return $name;
 		}
-		public function functionName($uid){
+		public function userInfoByUsername($username){
+			global $db;
+			$inquery="SELECT * FROM `users` WHERE username=?";
+			$userpid=$db->prepare($inquery);
+			$userpid->execute(array($username));
+			$name=$userpid->fetch(PDO::FETCH_ASSOC);
+			return $name;
+		}
+		public function usernameById($uid){
 			global $db;
 			$userquery="SELECT username FROM `users` WHERE id='".$uid."'";
 			$us=$db->query($userquery);
@@ -444,11 +452,11 @@ $web="http://localhost/YUGIV/";
 		}
 	}
 	class follow_info {
-		public function selectUserFollowers($username) {
+		public function selectUserFollowers($uid) {
 			global $db;
 			$fquery="SELECT user_id FROM `follow_info` WHERE followed_id=?";
 			$dd =$db->prepare($fquery);
-			$dd->execute(array($username));
+			$dd->execute(array($uid));
 			return $dd->fetchAll();
 		}
 		public function insertFollow($following,$followed){

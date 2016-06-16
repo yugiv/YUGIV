@@ -17,12 +17,10 @@ $spass = coder($_POST['spass']);
 		$tname=$username+"_wall";
 		$id= new latestUserId;
 		$id= $id->id;
-		$r=new users();
-		$r->createNewUser($id,$username,$name,$password,$birth);
+		$usern->createNewUser($id,$username,$name,$password,$birth);
 		$z=new walls();
 		$z->createNewWall($username);
-		$id= new users();
-		$id=$id->userId($username);
+		$id=$usern->userId($username);
 		$_SESSION['uid']= $id;
 		if(is_numeric($_POST['phone']) && $_POST['phone'] != ""){
 			new insertPhonenumber($_SESSION['uid'],$_POST['phone']);

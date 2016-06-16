@@ -9,7 +9,6 @@ $(".up").on('click', function(){
 	var dc= d+"c";
 	var uc= name+"c";
 	$.post('http://localhost/YUGIV/xml/postupvote.php', {name: name}, function(data){
-		alert(data);
 		if(data=="upvote"){
 			currentclassname.attr('src',"http://localhost/YUGIV/icons/greenuparrow.png");
 			if (d2.attr('src')=="http://localhost/YUGIV/icons/reddownarrow.png") {

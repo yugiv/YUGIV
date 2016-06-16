@@ -13,6 +13,7 @@ require '../require.php';
 		username= username[1].split("/");
 		username= username[0];
 			$.post('<?=$originallink?>xml/unfriend.php', {username: username}, function(data){
+				alert(data);
 				if(data=="done")
 				$('.friendstuff').text("send friend request");
 				else

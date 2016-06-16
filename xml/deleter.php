@@ -2,25 +2,26 @@
 if(preg_match('/[^a-zA-Z]+/', $_POST['name'])){
 session_start();
 require "mysql_classes.php";
-$uid = $_SESSION['uid'];
-$name = $_POST['name'];
+$uid = (int)$_SESSION['uid'];
+$name = (int)$_POST['name'];
 if(strpos($name,'-')== false){
-	$ch= new checkIfPostExists($uid,$name);
-	$exis= $ch->bool;
+	$ch= new posts();
+	$exis= $ch->checkIfPostExists($uid,$name);
 	if($exis){
-		new deleteUserPost($uid,$name);
-		new votePostDelete($name);
-		new deleteAllComments($name);
+		$ch->deleteUserPost($uid,$name);
+		$ch->votePostDelete($name);
+		$c= new comments();
+		$c->deleteAllComments($name);
 		echo "post";
 	}
 }else{
 	$ids=explode("-", $name);
 	if(count($ids) == 2){
-		$ch= new checkIfCommentExists($uid,$ids[0],$ids[1]);
-		$exis=$ch->bool;
+		$c=new comments();
+		$exis=$c->checkIfCommentExists($uid,$ids[0],$ids[1]);
 		if($exis){
-			new deleteUserComment($uid,$ids[0],$ids[1]);
-			new voteCommentDelete($ids[0],$ids[1]);
+			$c->deleteUserComment($uid,$ids[0],$ids[1]);
+			$c->voteCommentDelete($ids[0],$ids[1]);
 			echo "comment";
 		}
 	}elseif(count($ids) == 3){

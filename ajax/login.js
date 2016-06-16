@@ -2,6 +2,7 @@ $(document).on("click","#log",function() {
 	var username=$('.log[name="username"]').val();
 	var password=$('.log[name="password"]').val();
 	$.post('loger.php', {username: username, password: password}, function(data){
+		alert(data);
 		if(data=="done"){
 			window.location=window.location.href;
 		}else{
