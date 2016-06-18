@@ -27,7 +27,7 @@
 						
 						afterClose: function() {
 							$( "#anobox" ).remove();
-							$.post('postupload.php', {title:title,post: post, view_option: view_option,anonymous:ano, type: "regular", aname: $("#post").attr('aname'), apass: $("#post").attr('apass')}, function(data){
+							$.post('http://localhost/YUGIV/postupload.php', {title:title,post: post, view_option: view_option,anonymous:ano, type: "regular", aname: $("#post").attr('aname'), apass: $("#post").attr('apass')}, function(data){
 								alert(data);
 								$("#post").remove();
 							});
@@ -37,6 +37,7 @@
 			}); 
 		}else{
 			$.post('postupload.php', {title:title,post: post, view_option: view_option,anonymous:ano, type: "regular"}, function(data){
+				alert(data);
 				$("#post").remove();
 			});
 		}

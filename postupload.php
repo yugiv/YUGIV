@@ -3,8 +3,8 @@ session_start();
 require 'xml/mysql_classes.php';
 require 'xml/functions.php';
 if (isset($_POST['post'])) {
-	$us= new userInfo($_SESSION['uid']);
-	$username= $us->user;
+	$us= new users;
+	$username= $us->userInfoById($_SESSION['uid']);
 	$username=$username['username'];
 	$view=$_POST['view_option'];
 	$cont=$_POST['post'];
@@ -28,8 +28,8 @@ if (isset($_POST['post'])) {
 		$title=$_POST['title'];
 		$content=$_POST['post'];
 	}
-	$id =new latestPostId;
-	$id=$id->id +1;
+	$p =new posts;
+	$id=$p->latestPostId() +1;
 	if ($_POST['type']=="video") {
 		$content="<video width='580' height='240' controls><source src='".$content."' type='video/mp4'>Your browser does not support HTML5 video.</video>";
 	}
@@ -37,7 +37,8 @@ if (isset($_POST['post'])) {
 		$aname=htmlentities($_POST['aname']);
 		$apass= password($_POST['apass']);
 		echo $id.$anouser.$aname.$apass;
-		new newAnoUser($id,$anouser,$aname,$apass);
+		$a=new anonymous_posts();
+		$a->newAnoUser($id,$anouser,$aname,$apass);
 		if($_POST['view_option'] == "personal"){
 			new submitPost($id,0,$title,$view,$_POST['type'],$content);
 			$pl = new lastPlacementInUserWall($username);
@@ -68,31 +69,31 @@ if (isset($_POST['post'])) {
 		}
 	}else{
     	if($_POST['view_option'] == "personal"){
-			new submitPost($id,$_SESSION['uid'],$title,$view,$_POST['type'],$content);
-			$pl = new lastPlacementInUserWall($username);
-			$placement= $pl->placement +1;
-			new insertIntoWall($username, $placement, $id);
+			$p->submitPost($id,$_SESSION['uid'],$title,$view,$_POST['type'],$content);
+			$w = new walls();
+			$placement= $w->lastPlacementInUserWall($username); +1;
+			$w->insertIntoWall($username, $placement, $id);
 		}elseif($_POST['view_option'] == "friends"){
-			new submitPost($id,$_SESSION['uid'],$title,$view,$_POST['type'],$content);
-			$fr = new selectUserFriends($username);
-			$plo = new lastPlacementInUserWall($username);
-			$placment= $plo->placement +1;
-			new insertIntoWall($username, $placment, $id);
+			$p->submitPost($id,$_SESSION['uid'],$title,$view,$_POST['type'],$content);
+			$fr= new friends();
+			$fr = $fr->selectUserFriends($username);
+			$w= new walls();
+			$placment= $w->lastPlacementInUserWall($username) +1;
+			$w->insertIntoWall($username, $placment, $id);
 			foreach($fr->friends as $key){
-				$pl = new lastPlacementInUserWall($key[0]);
-				$placement= $pl->placement +1;
-				new insertIntoWall($key[0], $placement, $id);
+				$placement= $w->lastPlacementInUserWall($key[0]) +1;
+				$w->insertIntoWall($key[0], $placement, $id);
 			}
 		}elseif($_POST['view_option'] == "global"){
-			new submitPost($id,$_SESSION['uid'],$title,$view,$_POST['type'],$content);
-			$follower= new selectUserFollowers($username);
-			$plo = new lastPlacementInUserWall($username);
-			$placment= $plo->placement +1;
-			new insertIntoWall($username, $placment, $id);
+			$p->submitPost($id,$_SESSION['uid'],$title,$view,$_POST['type'],$content);
+			$w= new walls();
+			$fo= new follow_info();
+			$follower= $fo->selectUserFollowers($username);
+			$placment= $w->lastPlacementInUserWall($username) +1;
+			$w->insertIntoWall($username, $placment, $id);
 			foreach($follower->follower as $key){
-				$pl = new lastPlacementInUserWall($key[0]);
-				$placement= $pl->placement +1;
-				new insertIntoWall($key[0], $placement, $id);
+				$placement= $w->lastPlacementInUserWall($key[0]) +1;
+				$w->insertIntoWall($key[0], $placement, $id);
 			}
 		}
 	}
