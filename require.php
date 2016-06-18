@@ -15,6 +15,7 @@ if (isset($_COOKIE['username']) && isset($_COOKIE['password']) && !isset($_SESSI
 	$_SESSION['uid']=$uid['id'];
 }
 if(isset($_SESSION['uid']) && !isset($_COOKIE['username'],$_COOKIE['password'])){
+	var_dump($_SESSION['uid']);
 	$t= new users();
 	$t= $t->userInfoById($_SESSION['uid']);
 	$username=$t['username'];

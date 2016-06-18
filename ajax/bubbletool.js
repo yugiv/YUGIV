@@ -1,10 +1,5 @@
 $(document).on('click',"#toolbubble.notclick", function() {
-	$.ajax({
-            type: 'GET',
-            url: 'http://localhost/YUGIV/xml/toolbubble.php',
-            dataType: 'json',
-            cache: false,
-            success: function(data) {
+	$.getJSON('http://localhost/YUGIV/xml/toolbubble.php',function(data) {
                $( "#toolbubble" ).animate({
 			    	opacity: 0.25
 				}, 100);
@@ -32,9 +27,7 @@ $(document).on('click',"#toolbubble.notclick", function() {
 					    $(this).removeClass("cooling").dequeue();
 					});
 			  });
-			  
-			},
-			});
+		});
 });
 function closetoolbubble(){
 	$( "#toolbubble" ).animate({

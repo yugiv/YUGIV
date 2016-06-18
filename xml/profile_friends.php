@@ -9,7 +9,6 @@ $url= $_SERVER['PHP_SELF'];
 	echo "<div id='profileboxfriends'>";
 	if(!empty($friends)){
 	foreach ($friends as $key) {
-		echo $key['user_id']." ".$user_id['id'];
 		if($key['user_id']!= $user_id['id']){
 			$user= $us->userInfoById($key['friend']);
 		}else{

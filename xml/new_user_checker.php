@@ -15,17 +15,16 @@ $spass = coder($_POST['spass']);
 	$birth= $_POST['year']."-".$_POST['month']."-".$_POST['day'];
 	if($fpass==$spass && $username!="" && $name!="" && $birth !=""){
 		$tname=$username+"_wall";
-		$id= new latestUserId;
-		$id= $id->id;
+		$id= $usern->latestUserId();
 		$usern->createNewUser($id,$username,$name,$password,$birth);
 		$z=new walls();
 		$z->createNewWall($username);
-		$id=$usern->userId($username);
-		$_SESSION['uid']= $id;
+		$id=$usern->userInfoByUsername($username);
+		$_SESSION['uid']= $id['id'];
 		if(is_numeric($_POST['phone']) && $_POST['phone'] != ""){
 			new insertPhonenumber($_SESSION['uid'],$_POST['phone']);
 		}
-		new newUserPreferences($id);
+		new newUserPreferences($id['id']);
 		echo $username;
 		
 	}else{
