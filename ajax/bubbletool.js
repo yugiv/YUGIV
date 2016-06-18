@@ -72,7 +72,7 @@ function classCheckTool () {
 	}
 }
 $(document).on('click', '#firsttoolbubble', function(){
-	$.get("http://localhost/YUGIV/tool_bubble_htm/regular_post.html",function(data){
+	$.get("http://localhost/YUGIV/tool_bubble_html/regular_post.html",function(data){
 		var name = "regular_post";
 		if($("#post").html()!= undefined){
 			if($("#post").hasClass(name)){
