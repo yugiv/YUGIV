@@ -14,6 +14,15 @@ function nushiii() //a function for the size change button
 	var e = window.prompt("Enter a size");
 	document.body.style.fontSize=e;
 }
+function getSelectionText() {
+    var text = "";
+    if (window.getSelection) {
+        text = window.getSelection().toString();
+    } else if (document.selection && document.selection.type != "Control") {
+        text = document.selection.createRange().text;
+    }
+    return text;
+}
 </script>	
 <div id="post" class="big blog_post">
 	<form name="meow"> 
