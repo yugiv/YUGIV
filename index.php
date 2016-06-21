@@ -41,7 +41,7 @@ require "require.php";
 	<div id="classerbubble" class="notclick"><img src="<?=$originallink?>icons/class.png" id="classbubbleicon" /></div>
 	<?php
 	require "postload.php";
-	?>
+        ?>
 	<script type="text/javascript" src="<?=$originallink?>src/autogrow.min.js"></script>
 	<script type="text/javascript" src="<?=$originallink?>src/rotate.js"></script>
 	<script type='text/javascript' src='<?=$originallink?>ajax/postbuttons.js'></script>

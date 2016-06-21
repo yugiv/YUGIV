@@ -9,9 +9,12 @@ $(document).on('click',"#toolbubble.notclick", function() {
 			    	$( "body" ).append( "<div id='firsttoolbubble' style='opacity:0;'><img src='"+data[0][1]+"' class='toolbubbleicon'/></div>" );
 			    	$( "body" ).append( "<div id='secondtoolbubble' style='opacity:0;'><img src='"+data[1][1]+"' class='toolbubbleicon'/></div>" );
 			    	$( "body" ).append( "<div id='thirdtoolbubble' style='opacity:0;'><img src='"+data[2][1]+"' class='toolbubbleicon'/></div>" );
+                                $( "body" ).append( "<div id='fourthtoolbubble' style='opacity:0;'><img src='"+data[3][1]+"' class='toolbubbleicon'/></div>" );
 			    	$( "body" ).append( "<div id='tipsytoolfirst' style='opacity:0;'>"+data[0][0]+"</div>");
 			    	$( "body" ).append( "<div id='tipsytoolsecond' style='opacity:0;'>"+data[1][0]+"</div>");
 			    	$( "body" ).append( "<div id='tipsytoolthird' style='opacity:0;'>"+data[2][0]+"</div>");
+                                $( "body" ).append( "<div id='tipsytoolfourth' style='opacity:0;'>"+data[3][0]+"</div>");
+                                
 			    	$( "#firsttoolbubble" ).animate({
 			    		opacity: 1
 					}, 50, function(){
@@ -36,6 +39,12 @@ function closetoolbubble(){
 	$( "#toolbubble" ).animate({
     	opacity: 1
 	}, 100, function() {
+        $("#toolbubble").animate({
+                opacity: 0
+	}, 50, function(){
+          $("#fourthtoolbubble").animate({
+			opacity: 0
+		}, 50, function(){
 		$("#thirdtoolbubble").animate({
 			opacity: 0
 		}, 50, function(){
@@ -45,16 +54,20 @@ function closetoolbubble(){
 				$( "#firsttoolbubble" ).animate({
 		    		opacity: 0
 				}, 50,function(){
+                                        $( "#fourthtoolbubble" ).remove();
 					$( "#thirdtoolbubble" ).remove();
 					$( "#secondtoolbubble" ).remove();
 	  				$( "#firsttoolbubble" ).remove();
 	  				$("#tipsytoolfirst").remove();
 	  				$("#tipsytoolsecond").remove();
 	  				$("#tipsytoolthird").remove();
+                                        $("#tipsytoolfourth").remove();
 				});
 		});
 		});
 	});
+        });
+});
 }
 $(document).click(function() {
     if($("#toolbubble.isclick").length !=0 && $("#toolbubble.isclick.cooling").length == 0){
@@ -154,6 +167,36 @@ $(document).on('mouseenter', '#thirdtoolbubble', function(){
 });
 $(document).on('mouseleave', '#thirdtoolbubble', function(){
 	$("#tipsytoolthird").animate({
+		    		opacity: 0
+				}, 50,function(){
+				});
+});
+
+$(document).on('click', '#fourthtoolbubble', function(){
+	$.get("/YUGIV/tool_bubble_html/image_post.html",function(data){
+		var name = "image_post";
+		if($("#post").html()!= undefined){
+			if($("#post").hasClass(name)){
+				$("#post").remove();
+			}else{
+				$("#post").remove();
+				$( "body" ).append(data);
+			}
+		}else{
+			$( "body" ).append(data);
+		}
+	});
+	closetoolbubble();
+	$("#toolbubble").removeClass("isclick").addClass("notclick");
+});
+$(document).on('mouseenter', '#fourthtoolbubble', function(){
+	$("#tipsytoolfourth").animate({
+		    		opacity: 1
+				}, 200,function(){
+				});
+});
+$(document).on('mouseleave', '#fourthtoolbubble', function(){
+	$("#tipsytoolfourth").animate({
 		    		opacity: 0
 				}, 50,function(){
 				});
