@@ -1,0 +1,51 @@
+<div id="post" class="medium image_post">
+<p>Entry Title: <input name="title" id="title" type="text" size="80" maxlength="80" /></p>
+<div style="margin-left: 10px; width: 300px;"><div id="get_file">
+<input type="file" name="image" id="file" />
+	<p>click or drop file to choose image</p>
+</div>
+<div id="customfileupload">Select a file</div>
+<progress id="prog" style="visibility: hidden;" value="0" min="0" max="100"></progress></div>
+<br />
+<div id="postbottom">	
+	<select style="margin-left: 6px;" name="view_option" class="view">
+		<option>global</option>
+		<option>friends</option>
+		<option>personal</option>
+	</select>
+	<label style="margin-left: 20px;"><input type="checkbox" class="anobox" name="anonymous" value="anonymous"/>anonymity?</label>
+	<input style="margin-left: 20px;" type="button" value="Upload image" id="imagepost" />
+</div>
+
+	<script>
+	$(document).on('click', '#imagepost', function(){
+		if($("#file").val()==''){
+			alert('file empty');
+		}else{
+			$("#prog").css('visibility', 'visible');
+			$("#file").upload('http://localhost/YUGIV/xml/imageupload.php',function(data){
+				var imagelink=data;
+				var title= $("#title").val();
+				var view_option= $(".view").val();
+				var ano = $(".anobox").is(":checked");
+				$.post('postupload.php', {title:title,post: imagelink, view_option: view_option,anonymous:ano, type: "image"}, function(ddata){
+					$("#post").remove();
+				});
+			},$("#prog"));
+		}
+	});
+	$(document).on('change','#file',function (e) {
+		var file= $(this).val();
+		var exts = ['jpg' , 'png' , 'jpeg' , 'jfif' , 'tiff' , 'tif'];
+	      if ( file ) {
+	        var get_ext = file.split('.');
+	        get_ext = get_ext.reverse();
+	        if ( $.inArray ( get_ext[0].toLowerCase(), exts ) > -1 ){
+	          $('#customfileupload').html($(this).val());
+	        } else {
+	          $(this).val('');
+	        }
+	        }
+	});
+	</script>
+</div>
