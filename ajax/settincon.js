@@ -37,8 +37,10 @@ $(document).on('click','.bubble li.edit', function(){
 			var linker= data.slice(0, -4);
 			alert(linker);
 			$.post('http://localhost/YUGIV/xml/edit_post.php',{type: linker}, function(ddata){
-				if(data!=""){
+				alert(ddata);
+				if(ddata!=""){
 					$.post(ddata,{title:title,name: name,content:content}, function(dddata){
+						alert(dddata);
 						if(dddata!=""){
 						$("#post").remove();
 						$('body').append(dddata);

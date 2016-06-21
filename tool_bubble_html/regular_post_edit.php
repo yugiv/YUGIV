@@ -3,8 +3,8 @@ require '../xml/mysql_classes.php';
 require '../xml/functions.php';
 if(isset($_POST['title'],$_POST['content'],$_POST['name'])){
 	$pid=(int)$_POST['name'];
-	$check= new selectPostById($_POST['name']);
-	$check= $check->array;
+	$check= new posts();
+	$check= $check->simpleSelect("post_id", (int)$_POST['name']);
 	$aname="";
 	if(empty($check['user_id']) && is_int($check['user_id'])){
 		$ano= new anoInfo($pid);
